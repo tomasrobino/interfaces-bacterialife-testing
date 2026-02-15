@@ -5,7 +5,6 @@ import org.junit.jupiter.api.DisplayName;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@DisplayName("BacteriaLifeLogic Tests")
 class BacteriaLifeLogicTest {
 
     private BacteriaLifeLogic logic;
@@ -17,7 +16,6 @@ class BacteriaLifeLogicTest {
     }
 
     @Test
-    @DisplayName("Should generate initial generation with correct dimensions")
     void testGenerateInitialGen_CorrectDimensions() {
         int[][] gen = logic.generateInitialGen();
 
@@ -27,7 +25,6 @@ class BacteriaLifeLogicTest {
     }
 
     @Test
-    @DisplayName("Should generate initial generation with only 0s and 1s")
     void testGenerateInitialGen_ValidValues() {
         int[][] gen = logic.generateInitialGen();
 
@@ -40,7 +37,6 @@ class BacteriaLifeLogicTest {
     }
 
     @Test
-    @DisplayName("Should create new bacteria when exactly 3 neighbors exist")
     void testGenerateNewGen_Birth() {
         int[][] gen = new int[5][5];
         // Create a pattern where position (2,2) has exactly 3 neighbors
@@ -57,7 +53,6 @@ class BacteriaLifeLogicTest {
     }
 
     @Test
-    @DisplayName("Should kill bacteria with 0 or 1 neighbors (loneliness)")
     void testGenerateNewGen_DeathByLoneliness() {
         int[][] gen = new int[5][5];
         // Create a bacteria with only 1 neighbor
@@ -71,7 +66,6 @@ class BacteriaLifeLogicTest {
     }
 
     @Test
-    @DisplayName("Should kill bacteria with more than 3 neighbors (suffocation)")
     void testGenerateNewGen_DeathBySuffocation() {
         int[][] gen = new int[5][5];
         // Create a bacteria surrounded by 4 neighbors
@@ -88,7 +82,6 @@ class BacteriaLifeLogicTest {
     }
 
     @Test
-    @DisplayName("Should keep bacteria alive with 2 or 3 neighbors")
     void testGenerateNewGen_Survival() {
         int[][] gen = new int[5][5];
         // Create a bacteria with exactly 2 neighbors
@@ -103,7 +96,6 @@ class BacteriaLifeLogicTest {
     }
 
     @Test
-    @DisplayName("Should count neighbors correctly for corner cell")
     void testCheckNeighbours_CornerCell() {
         int[][] gen = new int[5][5];
         gen[0][0] = 1; // Top-left corner
@@ -116,7 +108,6 @@ class BacteriaLifeLogicTest {
     }
 
     @Test
-    @DisplayName("Should count neighbors correctly for edge cell")
     void testCheckNeighbours_EdgeCell() {
         int[][] gen = new int[5][5];
         gen[0][2] = 1; // Top edge
@@ -131,7 +122,6 @@ class BacteriaLifeLogicTest {
     }
 
     @Test
-    @DisplayName("Should count neighbors correctly for center cell")
     void testCheckNeighbours_CenterCell() {
         int[][] gen = new int[5][5];
         // Surround center cell (2,2) with all 8 neighbors
@@ -148,7 +138,6 @@ class BacteriaLifeLogicTest {
     }
 
     @Test
-    @DisplayName("Should count zero neighbors correctly")
     void testCheckNeighbours_NoNeighbors() {
         int[][] gen = new int[5][5];
         gen[2][2] = 1; // Only center cell is alive
@@ -158,7 +147,6 @@ class BacteriaLifeLogicTest {
     }
 
     @Test
-    @DisplayName("Should return true for valid coordinates")
     void testInBounds_ValidCoordinates() {
         int[][] gen = new int[5][5];
 
@@ -168,7 +156,6 @@ class BacteriaLifeLogicTest {
     }
 
     @Test
-    @DisplayName("Should return false for invalid coordinates")
     void testInBounds_InvalidCoordinates() {
         int[][] gen = new int[5][5];
 
@@ -178,8 +165,6 @@ class BacteriaLifeLogicTest {
         assertFalse(BacteriaLifeLogic.inBounds(gen, 0, 5), "Column beyond bounds should be invalid");
     }
 
-    @Test
-    @DisplayName("Should detect stable generation (no changes)")
     void testCheckStableGen_StableGeneration() {
         int[][] gen1 = {{1, 0, 1}, {0, 1, 0}, {1, 0, 1}};
         int[][] gen2 = {{1, 0, 1}, {0, 1, 0}, {1, 0, 1}};
@@ -189,7 +174,6 @@ class BacteriaLifeLogicTest {
     }
 
     @Test
-    @DisplayName("Should detect unstable generation (changes occurred)")
     void testCheckStableGen_UnstableGeneration() {
         int[][] gen1 = {{1, 0, 1}, {0, 1, 0}, {1, 0, 1}};
         int[][] gen2 = {{1, 0, 1}, {0, 0, 0}, {1, 0, 1}};
@@ -199,7 +183,6 @@ class BacteriaLifeLogicTest {
     }
 
     @Test
-    @DisplayName("Should increment round counter when generating new generation")
     void testGetRound_Increment() {
         assertEquals(0, logic.getRound(), "Initial round should be 0");
 
@@ -210,7 +193,6 @@ class BacteriaLifeLogicTest {
     }
 
     @Test
-    @DisplayName("Should handle multiple generations")
     void testGenerateNewGen_MultipleGenerations() {
         BacteriaLifeLogic testLogic = new BacteriaLifeLogic(5);
         int[][] gen = testLogic.generateInitialGen();
@@ -224,7 +206,6 @@ class BacteriaLifeLogicTest {
     }
 
     @Test
-    @DisplayName("Should handle empty generation (all dead)")
     void testGenerateNewGen_EmptyGeneration() {
         int[][] gen = new int[5][5]; // All zeros
         BacteriaLifeLogic testLogic = new BacteriaLifeLogic(5);
@@ -239,7 +220,6 @@ class BacteriaLifeLogicTest {
     }
 
     @Test
-    @DisplayName("Should handle full generation (all alive)")
     void testGenerateNewGen_FullGeneration() {
         int[][] gen = new int[5][5];
         for (int i = 0; i < 5; i++) {
@@ -263,7 +243,6 @@ class BacteriaLifeLogicTest {
     }
 
     @Test
-    @DisplayName("Should handle oscillating pattern (blinker)")
     void testGenerateNewGen_OscillatingPattern() {
         int[][] gen = new int[5][5];
         // Horizontal blinker
@@ -281,7 +260,6 @@ class BacteriaLifeLogicTest {
     }
 
     @Test
-    @DisplayName("Should handle stable pattern (block)")
     void testGenerateNewGen_StableBlock() {
         int[][] gen = new int[5][5];
         // 2x2 block (stable pattern)
@@ -300,7 +278,6 @@ class BacteriaLifeLogicTest {
     }
 
     @Test
-    @DisplayName("Should not modify original generation array")
     void testGenerateNewGen_DoesNotModifyOriginal() {
         int[][] gen = new int[5][5];
         gen[2][2] = 1;
