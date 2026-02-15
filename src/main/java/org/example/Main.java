@@ -11,8 +11,6 @@ public class Main {
         BacteriaLifeLogic logic = new BacteriaLifeLogic(dimension);
 
         // Create UI
-        SwingUtilities.invokeLater(() -> {
-            new BacteriaLifeUI(logic);
-        });
+        SwingUtilities.invokeLater(() -> new BacteriaLifeUI(logic));
     }
 }

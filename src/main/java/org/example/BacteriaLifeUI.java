@@ -16,7 +16,7 @@ public class BacteriaLifeUI {
     private int[][] bacteriaGen;
 
     // Generate a generation
-    private JPanel generateGen() {
+    public JPanel generateGen() {
         JPanel gen = new JPanel();
         gen.setLayout(new GridLayout(DIMENSION, DIMENSION, 3, 3));
         gen.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
@@ -37,7 +37,7 @@ public class BacteriaLifeUI {
     }
 
     // Refresh the grid after generating a new round
-    private void refreshGenPanel() {
+    public void refreshGenPanel() {
         genPanel.removeAll();
         genPanel.setLayout(new GridLayout(DIMENSION, DIMENSION, 3, 3));
 
@@ -53,7 +53,7 @@ public class BacteriaLifeUI {
     }
 
     // A bottom panel with a round label and a start button
-    private JPanel bottomPanel() {
+    public JPanel bottomPanel() {
         JPanel bottomPanel = new JPanel(new BorderLayout());
         bottomPanel.setBackground(BG_COLOR);
 
@@ -75,7 +75,7 @@ public class BacteriaLifeUI {
     }
 
     // Start button
-    private JButton getStartButton(JLabel roundLabel) {
+    public JButton getStartButton(JLabel roundLabel) {
         JButton startButton = new JButton("Start");
 
         startButton.addActionListener(e -> {
@@ -104,7 +104,7 @@ public class BacteriaLifeUI {
     }
 
     // To copy the gen
-    private int[][] deepCopy(int[][] bacteriaGen) {
+    public int[][] deepCopy(int[][] bacteriaGen) {
         if (bacteriaGen == null) return null;
         int[][] copy = new int[bacteriaGen.length][];
         for (int i = 0; i < bacteriaGen.length; i++) {
