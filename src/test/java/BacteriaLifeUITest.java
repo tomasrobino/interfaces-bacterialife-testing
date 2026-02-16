@@ -2,7 +2,6 @@ import org.example.BacteriaLifeLogic;
 import org.example.BacteriaLifeUI;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.MockedConstruction;
@@ -14,7 +13,6 @@ import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-@DisplayName("BacteriaLifeUI Tests")
 class BacteriaLifeUITest {
 
     @Mock
@@ -52,7 +50,6 @@ class BacteriaLifeUITest {
     }
 
     @Test
-    @DisplayName("Should call generateInitialGen on construction")
     void testConstructor_GeneratesInitialGen() {
         try (var ignored = mockConstruction(JFrame.class)) {
             new BacteriaLifeUI(mockLogic);
@@ -61,7 +58,6 @@ class BacteriaLifeUITest {
     }
 
     @Test
-    @DisplayName("Should call getRound when creating UI")
     void testConstructor_CallsGetRound() {
         try (var ignored = mockConstruction(JFrame.class)) {
             new BacteriaLifeUI(mockLogic);
@@ -70,7 +66,6 @@ class BacteriaLifeUITest {
     }
 
     @Test
-    @DisplayName("Should handle generation with all alive bacteria")
     void testUI_WithAllAliveBacteria() {
         when(mockLogic.generateInitialGen()).thenReturn(createAllAliveGen());
 
@@ -81,7 +76,6 @@ class BacteriaLifeUITest {
     }
 
     @Test
-    @DisplayName("Should handle generation with all dead bacteria")
     void testUI_WithAllDeadBacteria() {
         int[][] allDead = new int[DIMENSION][DIMENSION];
         when(mockLogic.generateInitialGen()).thenReturn(allDead);
@@ -93,7 +87,6 @@ class BacteriaLifeUITest {
     }
 
     @Test
-    @DisplayName("Should handle mixed bacteria pattern")
     void testUI_WithMixedPattern() {
         when(mockLogic.generateInitialGen()).thenReturn(createGenWithPattern());
 
@@ -104,7 +97,6 @@ class BacteriaLifeUITest {
     }
 
     @Test
-    @DisplayName("Should verify logic interactions during initialization")
     void testInitialization_LogicInteractions() {
         reset(mockLogic);
         when(mockLogic.generateInitialGen()).thenReturn(createEmptyGen());
@@ -120,7 +112,6 @@ class BacteriaLifeUITest {
     }
 
     @Test
-    @DisplayName("Should create JFrame with correct title and setup")
     void testFrame_HasCorrectTitle() {
         try (MockedConstruction<JFrame> mockedFrame = mockConstruction(JFrame.class,
                 (mock, context) -> {
@@ -142,7 +133,6 @@ class BacteriaLifeUITest {
     }
 
     @Test
-    @DisplayName("Should handle round counter with different values")
     void testRoundCounter_DifferentValues() {
         int[] roundValues = {0, 1, 5, 10, 50, 100};
 
@@ -159,7 +149,6 @@ class BacteriaLifeUITest {
     }
 
     @Test
-    @DisplayName("Should handle generation with glider pattern")
     void testGeneration_GliderPattern() {
         int[][] pattern = new int[DIMENSION][DIMENSION];
         pattern[1][2] = 1;
@@ -177,7 +166,6 @@ class BacteriaLifeUITest {
     }
 
     @Test
-    @DisplayName("Should not throw exception during UI creation")
     void testUICreation_NoExceptions() {
         try (var ignored = mockConstruction(JFrame.class)) {
             assertDoesNotThrow(() -> new BacteriaLifeUI(mockLogic));
@@ -185,7 +173,6 @@ class BacteriaLifeUITest {
     }
 
     @Test
-    @DisplayName("Should verify no unexpected interactions with logic")
     void testNoUnexpectedInteractions() {
         reset(mockLogic);
         when(mockLogic.generateInitialGen()).thenReturn(createEmptyGen());
@@ -201,7 +188,6 @@ class BacteriaLifeUITest {
     }
 
     @Test
-    @DisplayName("Should handle edge case with maximum round number")
     void testMaxRoundNumber() {
         when(mockLogic.getRound()).thenReturn(Integer.MAX_VALUE);
 
@@ -212,7 +198,6 @@ class BacteriaLifeUITest {
     }
 
     @Test
-    @DisplayName("Should initialize logic reference correctly")
     void testLogicReference_Initialization() {
         try (var ignored = mockConstruction(JFrame.class)) {
             new BacteriaLifeUI(mockLogic);
@@ -221,7 +206,6 @@ class BacteriaLifeUITest {
     }
 
     @Test
-    @DisplayName("Should handle empty generation correctly")
     void testEmptyGeneration_Handling() {
         int[][] emptyGen = new int[DIMENSION][DIMENSION];
         when(mockLogic.generateInitialGen()).thenReturn(emptyGen);
@@ -233,7 +217,6 @@ class BacteriaLifeUITest {
     }
 
     @Test
-    @DisplayName("Should handle sparse pattern generation")
     void testSparsePattern_Handling() {
         int[][] sparseGen = new int[DIMENSION][DIMENSION];
         sparseGen[0][0] = 1;
@@ -247,7 +230,6 @@ class BacteriaLifeUITest {
     }
 
     @Test
-    @DisplayName("Should verify frame setup operations")
     void testFrame_SetupOperations() {
         try (MockedConstruction<JFrame> mockedFrame = mockConstruction(JFrame.class)) {
             new BacteriaLifeUI(mockLogic);
@@ -263,7 +245,6 @@ class BacteriaLifeUITest {
     }
 
     @Test
-    @DisplayName("Should handle logic method calls in correct order")
     void testLogicMethodCallOrder() {
         try (var ignored = mockConstruction(JFrame.class)) {
             new BacteriaLifeUI(mockLogic);
@@ -271,6 +252,147 @@ class BacteriaLifeUITest {
             var inOrder = inOrder(mockLogic);
             inOrder.verify(mockLogic).generateInitialGen();
             inOrder.verify(mockLogic, atLeastOnce()).getRound();
+        }
+    }
+
+    @Test
+    void testDeepCopy_WithNullInput() {
+        try (var ignored = mockConstruction(JFrame.class)) {
+            BacteriaLifeUI ui = new BacteriaLifeUI(mockLogic);
+
+            int[][] result = ui.deepCopy(null);
+
+            assertNull(result, "Deep copy of null should return null");
+        }
+    }
+
+    @Test
+    void testDeepCopy_CreatesIndependentCopy() {
+        try (var ignored = mockConstruction(JFrame.class)) {
+            BacteriaLifeUI ui = new BacteriaLifeUI(mockLogic);
+
+            int[][] original = {{1, 0, 1}, {0, 1, 0}, {1, 0, 1}};
+            int[][] copy = ui.deepCopy(original);
+
+            assertNotNull(copy, "Copy should not be null");
+            assertNotSame(original, copy, "Copy should be a different array instance");
+            assertArrayEquals(original, copy, "Copy should have same values as original");
+        }
+    }
+
+    @Test
+    void testDeepCopy_ModificationDoesNotAffectOriginal() {
+        try (var ignored = mockConstruction(JFrame.class)) {
+            BacteriaLifeUI ui = new BacteriaLifeUI(mockLogic);
+
+            int[][] original = {{1, 0, 1}, {0, 1, 0}, {1, 0, 1}};
+            int[][] copy = ui.deepCopy(original);
+
+            // Modify the copy
+            copy[0][0] = 0;
+            copy[1][1] = 0;
+            copy[2][2] = 0;
+
+            // Original should remain unchanged
+            assertEquals(1, original[0][0], "Original should not be modified");
+            assertEquals(1, original[1][1], "Original should not be modified");
+            assertEquals(1, original[2][2], "Original should not be modified");
+
+            // Copy should have the new values
+            assertEquals(0, copy[0][0], "Copy should be modified");
+            assertEquals(0, copy[1][1], "Copy should be modified");
+            assertEquals(0, copy[2][2], "Copy should be modified");
+        }
+    }
+
+    @Test
+    void testDeepCopy_EmptyArray() {
+        try (var ignored = mockConstruction(JFrame.class)) {
+            BacteriaLifeUI ui = new BacteriaLifeUI(mockLogic);
+
+            int[][] original = new int[0][0];
+            int[][] copy = ui.deepCopy(original);
+
+            assertNotNull(copy, "Copy should not be null");
+            assertEquals(0, copy.length, "Copy should have same dimensions as original");
+        }
+    }
+
+    @Test
+    void testRefreshGenPanel_AllDeadBacteria() {
+        try (var ignored = mockConstruction(JFrame.class)) {
+            int[][] allDead = new int[DIMENSION][DIMENSION];
+            when(mockLogic.generateInitialGen()).thenReturn(allDead);
+
+            BacteriaLifeUI ui = new BacteriaLifeUI(mockLogic);
+
+            // Should handle bacteriaGen[i][j] == 0 branch
+            assertDoesNotThrow(ui::refreshGenPanel,
+                    "Should handle all dead bacteria without exception");
+        }
+    }
+
+    @Test
+    void testRefreshGenPanel_AllAliveBacteria() {
+        try (var ignored = mockConstruction(JFrame.class)) {
+            int[][] allAlive = createAllAliveGen();
+            when(mockLogic.generateInitialGen()).thenReturn(allAlive);
+
+            BacteriaLifeUI ui = new BacteriaLifeUI(mockLogic);
+
+            // Should handle bacteriaGen[i][j] == 1 branch
+            assertDoesNotThrow(ui::refreshGenPanel,
+                    "Should handle all alive bacteria without exception");
+        }
+    }
+
+    @Test
+    void testRefreshGenPanel_MixedPattern() {
+        try (var ignored = mockConstruction(JFrame.class)) {
+            int[][] mixed = createGenWithPattern();
+            when(mockLogic.generateInitialGen()).thenReturn(mixed);
+
+            BacteriaLifeUI ui = new BacteriaLifeUI(mockLogic);
+
+            // Should handle both branches: bacteriaGen[i][j] == 0 and bacteriaGen[i][j] == 1
+            assertDoesNotThrow(ui::refreshGenPanel,
+                    "Should handle mixed pattern without exception");
+        }
+    }
+
+    @Test
+    void testRefreshGenPanel_IteratesThroughAllRows() {
+        try (var ignored = mockConstruction(JFrame.class)) {
+            // Create pattern with bacteria in first and last row
+            int[][] pattern = new int[DIMENSION][DIMENSION];
+            pattern[0][0] = 1; // First row
+            pattern[DIMENSION-1][DIMENSION-1] = 1; // Last row
+
+            when(mockLogic.generateInitialGen()).thenReturn(pattern);
+
+            BacteriaLifeUI ui = new BacteriaLifeUI(mockLogic);
+
+            // Should iterate through all rows (i < DIMENSION)
+            assertDoesNotThrow(ui::refreshGenPanel,
+                    "Should iterate through all rows without exception");
+        }
+    }
+
+    @Test
+    void testRefreshGenPanel_IteratesThroughAllColumns() {
+        try (var ignored = mockConstruction(JFrame.class)) {
+            // Create pattern with bacteria in first and last column
+            int[][] pattern = new int[DIMENSION][DIMENSION];
+            pattern[0][0] = 1; // First column
+            pattern[0][DIMENSION-1] = 1; // Last column
+
+            when(mockLogic.generateInitialGen()).thenReturn(pattern);
+
+            BacteriaLifeUI ui = new BacteriaLifeUI(mockLogic);
+
+            // Should iterate through all columns (j < DIMENSION)
+            assertDoesNotThrow(ui::refreshGenPanel,
+                    "Should iterate through all columns without exception");
         }
     }
 }
